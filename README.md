@@ -134,5 +134,9 @@ Estimated Time Required: [Your Estimate Here]
 > After implementing the changes, commit your work using the following commands:
 `git add -A && git commit -m "Add the ability to post images" && git push`
 
+# Done!
 
+Thank you for completing this challenge. Kindly inform us when you have finished, and we will proceed to review your code. Make sure to add [nicodevs](https://github.com/nicodevs) to the list of collaborators for both your private repositories, including the Laravel API and the Nuxt app.
+
+Best of luck!
 
