@@ -141,7 +141,7 @@ Estimated Time Required: [Your Estimate Here]
 
 # Done!
 
-Thank you for completing this challenge. Kindly inform us when you have finished, and we will proceed to review your code. Make sure to add [nicodevs](https://github.com/nicodevs) to the list of collaborators for both your private repositories, including the Laravel API and the Nuxt app.
+Thank you for completing this challenge. Kindly inform us when you have finished, and we will proceed to review your code. Make sure to add [harlekoy](https://github.com/harlekoy) to the list of collaborators for both your private repositories, including the Laravel API and the Nuxt app.
 
 Best of luck!
 
