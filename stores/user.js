@@ -17,6 +17,8 @@ export const useUser = defineStore('user', () => {
 
   const name = computed(() => isGuest.value ? null : data.value.name)
 
+
+
   async function start (payload) {
     started.value = true
     data.value = payload.data
@@ -24,12 +26,28 @@ export const useUser = defineStore('user', () => {
 
     // Write cookie
     tokenCookie.value = payload.token
+    // If the payload contains favorites, populate the favorites store
+    try {
+      const favs = get(payload, 'data.favorites', null)
+      if (favs) {
+        const favoriteStore = useFavorites()
+        favoriteStore.set(favs)
+      }
+    } catch (e) {
+      // ignore for now
+    }
   }
 
   function clear () {
     data.value = {}
     token.value = null
     tokenCookie.value = null
+    try {
+      const favoriteStore = useFavorites()
+      favoriteStore.set([])
+    } catch (e) {
+      // ignore for now
+    }
   }
 
   async function login ({ email, password }) {
