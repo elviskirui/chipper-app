@@ -81,19 +81,26 @@ async function togglePostFavorite() {
     <p>
       {{ post.body }}
     </p>
+    <div v-if="post.image || post.image_url" class="mt-3">
+      <img
+        :src="post.image_url || post.image"
+        alt="post image"
+        class="w-full rounded-lg object-cover max-h-96"
+      />
+    </div>
     <button
       v-if="!user.isGuest"
       @click.prevent="togglePostFavorite"
       :disabled="isPostProcessing"
       :class="[
         'flex items-center justify-center gap-2 p-4 rounded-lg font-bold transition-colors disabled:opacity-50',
-        isPostFavorited
-          ? 'bg-red-500 text-white'
-          : 'bg-red-200 text-red-500'
+        isPostFavorited ? 'bg-red-500 text-white' : 'bg-red-200 text-red-500',
       ]"
     >
       <HeartIcon class="h-6 stroke-current" />
-      <span>{{ isPostFavorited ? "Remove from favorites" : "Add to my favorites" }}</span>
+      <span>{{
+        isPostFavorited ? "Remove from favorites" : "Add to my favorites"
+      }}</span>
     </button>
   </div>
 </template>

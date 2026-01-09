@@ -44,9 +44,15 @@ export const usePosts = defineStore('posts', () => {
     }
   }
 
-  async function create ({ title, body }) {
-    const payload = await $api.post('posts', { title, body })
-    
+  async function create (params) {
+    // Accept an object or a FormData 
+    let payload
+    if (params instanceof FormData) {
+      payload = await $api.post('posts', params)
+    } else {
+      payload = await $api.post('posts', params)
+    }
+
     const newPost = payload?.data ?? payload
 
     posts.value = [newPost, ...posts.value]
