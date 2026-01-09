@@ -1,21 +1,21 @@
 <script setup>
 definePageMeta({
-  middleware: ['validate-session']
-})
+  middleware: ["validate-session"],
+});
 
-const { $api } = useNuxtApp()
-const user = useUser()
+const user = useUser();
+const postsStore = usePosts();
 
-const { data: posts } = await $api.get('posts')
+await postsStore.fetch();
 </script>
 
 <template>
-  <PostForm
-    v-if="!user.isGuest" />
+  <PostForm v-if="!user.isGuest" />
   <div class="grid gap-16">
     <PostItem
-      v-for="post in posts"
+      v-for="post in postsStore.posts"
       :key="post.id"
-      v-bind="{ post }" />
+      v-bind="{ post }"
+    />
   </div>
 </template>
