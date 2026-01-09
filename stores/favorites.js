@@ -19,6 +19,10 @@ export const useFavorites = defineStore('favorites', () => {
     return !!favorites.value.find(f => String(get(f, 'id')) === String(userId))
   }
 
+  function isPostFavorite (postId) {
+    return !!posts.value.find(p => String(get(p, 'id')) === String(postId))
+  }
+
   async function follow (userId) {
     await $api.post(`/users/${userId}/favorite`)
     if (!isFavorite(userId)) favorites.value.unshift({ id: userId })
@@ -27,6 +31,16 @@ export const useFavorites = defineStore('favorites', () => {
   async function unFollow (userId) {
     await $api.delete(`/users/${userId}/favorite`)
     favorites.value = favorites.value.filter(f => String(get(f, 'id')) !== String(userId))
+  }
+
+  async function favoritePost (postId) {
+    await $api.post(`/posts/${postId}/favorite`)
+    if (!isPostFavorite(postId)) posts.value.unshift({ id: postId })
+  }
+
+  async function unfavoritePost (postId) {
+    await $api.delete(`/posts/${postId}/favorite`)
+    posts.value = posts.value.filter(p => String(get(p, 'id')) !== String(postId))
   }
 
   async function fetch () {
@@ -65,8 +79,11 @@ export const useFavorites = defineStore('favorites', () => {
     setUsers,
     setPosts,
     isFavorite,
+    isPostFavorite,
     follow,
     unFollow,
+    favoritePost,
+    unfavoritePost,
     fetch
   }
 })

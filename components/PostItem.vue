@@ -12,6 +12,7 @@ const props = defineProps({
 const user = useUser();
 const favoriteStore = useFavorites();
 const isProcessing = ref(false);
+const isPostProcessing = ref(false);
 
 const isOwnPost = computed(() => {
   if (user.isGuest) return false;
@@ -21,6 +22,11 @@ const isOwnPost = computed(() => {
 const isFavorited = computed(() => {
   if (user.isGuest) return false;
   return favoriteStore.isFavorite(props.post.user.id);
+});
+
+const isPostFavorited = computed(() => {
+  if (user.isGuest) return false;
+  return favoriteStore.isPostFavorite(props.post.id);
 });
 
 async function toggleFavorite() {
@@ -35,6 +41,21 @@ async function toggleFavorite() {
     }
   } finally {
     isProcessing.value = false;
+  }
+}
+
+async function togglePostFavorite() {
+  if (user.isGuest) return;
+  const postId = props.post.id;
+  isPostProcessing.value = true;
+  try {
+    if (favoriteStore.isPostFavorite(postId)) {
+      await favoriteStore.unfavoritePost(postId);
+    } else {
+      await favoriteStore.favoritePost(postId);
+    }
+  } finally {
+    isPostProcessing.value = false;
   }
 }
 </script>
@@ -61,10 +82,18 @@ async function toggleFavorite() {
       {{ post.body }}
     </p>
     <button
-      class="bg-red-200 text-red-500 flex items-center justify-center gap-2 p-4 rounded-lg"
+      v-if="!user.isGuest"
+      @click.prevent="togglePostFavorite"
+      :disabled="isPostProcessing"
+      :class="[
+        'flex items-center justify-center gap-2 p-4 rounded-lg font-bold transition-colors disabled:opacity-50',
+        isPostFavorited
+          ? 'bg-red-500 text-white'
+          : 'bg-red-200 text-red-500'
+      ]"
     >
       <HeartIcon class="h-6 stroke-current" />
-      <span class="font-bold"> Add to my favorites </span>
+      <span>{{ isPostFavorited ? "Remove from favorites" : "Add to my favorites" }}</span>
     </button>
   </div>
 </template>
